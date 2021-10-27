@@ -8,6 +8,8 @@ close all;
 clear all;
 clc;
 
+addpath('../
+
 % Choose alpha values for your desensitization 
 % 0 implies no desensitization
 alpha = 0;
