@@ -8,7 +8,14 @@ close all;
 clear all;
 clc;
 
-addpath('../
+addpath('GPOPS-II-continuous');
+addpath('GPOPS-II-endpoint');
+addpath('GPOPS-II-obtain-solution');
+addpath('linearizations');
+addpath('post-processing');
+addpath('run-scripts');
+addpath('setup-scripts');
+addpath('solution-data-files');
 
 % Choose alpha values for your desensitization 
 % 0 implies no desensitization
@@ -35,13 +42,15 @@ n_trials = 1000;
 p_range = mvnrnd(p_nom, C.SigmaP, n_trials)';
     
 % Obtain solution from GPOPS-II
+tstart   = tic;
 solution = obtain_solution_v3(alpha, C, IC, FC, LB, UB, ND);
+simTime  = toc(tstart);
 
 % Run MC analysis
 [muf, Sigmaf] = MonteCarlo(solution,C,ND,IC,'k');
 
 % Sensitivity analysis
-loader = load('open_loop_sensi');
+loader = load('solution-data-files/open_loop_sensi');
 sensi  = loader.S;
 plotSensitivities(solution.phase.time, sensi, 7, 'k');
 

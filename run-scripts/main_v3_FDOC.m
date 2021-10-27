@@ -4,9 +4,18 @@
 % ---------- (uncertain parameters: Scale height - H) ------------------- %
 % ----------------------------------------------------------------------- %
 
-close all;
+%close all;
 clear all;
 clc;
+
+addpath('../GPOPS-II-continuous');
+addpath('../GPOPS-II-endpoint');
+addpath('../GPOPS-II-obtain-solution');
+addpath('../linearizations');
+addpath('../post-processing');
+addpath('../run-scripts');
+addpath('../setup-scripts');
+addpath('../solution-data-files');
 
 % Choose alpha values for your desensitization 
 % 0 implies no desensitization
@@ -38,8 +47,7 @@ solution = obtain_solution_v3_FDOC(alpha, C, IC, FC, LB, UB, ND);
 simTime  = toc(tstart);
 
 % Run MC analysis
-loader = load('fdoc_solution_a_10');
-[muf, Sigmaf] = MonteCarlo(loader.solution,C,ND,IC,'r');
+[muf, Sigmaf] = MonteCarlo(solution,C,ND,IC,'r');
 
 % Sensitivity analysis
 plotSensitivities(solution.phase.time, solution.phase.state(:, 5 : 8), 7, 'r');

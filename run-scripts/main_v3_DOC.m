@@ -8,6 +8,15 @@
 clear all;
 clc;
 
+addpath('GPOPS-II-continuous');
+addpath('GPOPS-II-endpoint');
+addpath('GPOPS-II-obtain-solution');
+addpath('linearizations');
+addpath('post-processing');
+addpath('run-scripts');
+addpath('setup-scripts');
+addpath('solution-data-files');
+
 % Choose alpha values for your desensitization 
 % 0 implies no desensitization
 alpha = 1;
@@ -33,7 +42,9 @@ n_trials = 1000;
 p_range = mvnrnd(p_nom, C.SigmaP, n_trials)';
     
 % Obtain solution from GPOPS-II
+tstart   = tic;
 solution = obtain_solution_v3_DOC(alpha, C, IC, FC, LB, UB, ND);
+simTime  = toc(tstart);
 
 % Run MC analysis
 [muf, Sigmaf] = MonteCarlo(solution,C,ND,IC,'b');
