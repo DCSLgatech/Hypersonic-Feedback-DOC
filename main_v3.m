@@ -24,7 +24,7 @@ run ND_processing
 % Sample 100 parameters values within +-2% of nominal one for 
 % Monte Carlo simulations
 %C.SigmaP = (0.02 / 3*[C.Hbar, 0;0, C.CD0]).^2;
-C.SigmaP = (0.1 / 3)^2 * C.Hbar^2;
+C.SigmaP = (0.05 / 3)^2 * C.Hbar^2;
 %p_nom    = [C.Hbar; C.CD0];
 p_nom    = C.Hbar;
 n_trials = 1000;
