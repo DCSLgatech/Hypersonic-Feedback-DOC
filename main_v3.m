@@ -13,7 +13,6 @@ addpath('GPOPS-II-endpoint');
 addpath('GPOPS-II-obtain-solution');
 addpath('linearizations');
 addpath('post-processing');
-addpath('run-scripts');
 addpath('setup-scripts');
 addpath('solution-data-files');
 
