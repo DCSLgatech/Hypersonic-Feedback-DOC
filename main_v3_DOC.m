@@ -4,7 +4,7 @@
 % ---------- (uncertain parameters: Scale height - H) ------------------- %
 % ----------------------------------------------------------------------- %
 
-%close all;
+close all;
 clear all;
 clc;
 

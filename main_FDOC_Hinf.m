@@ -4,7 +4,7 @@
 % ---------- (uncertain parameters: Scale height - H) ------------------- %
 % ----------------------------------------------------------------------- %
 
-close all;
+%close all;
 clear all;
 clc;
 
@@ -19,6 +19,7 @@ addpath('solution-data-files');
 % Choose alpha values for your desensitization 
 % 0 implies no desensitization
 alpha = 10;
+gamma = 1;
 
 % Load the set-up (constants, initial and final conditions, bounds)
 [C, IC, FC, LB, UB] = setup();
@@ -26,7 +27,7 @@ alpha = 10;
 % Obtain some important conversions
 run conversions
 
-% Nondimensionalization
+% Non-dimensionalization
 run ND_processing
 
 % Sample 100 parameters values within +-2% of nominal one for 
@@ -42,11 +43,11 @@ p_range = mvnrnd(p_nom, C.SigmaP, n_trials)';
     
 % Obtain solution from GPOPS-II
 tstart   = tic;
-solution = obtain_solution_v3_FDOC(alpha, C, IC, FC, LB, UB, ND);
+solution = obtain_solution_v3_FDOC_Hinf(alpha, gamma, C, IC, FC, LB, UB, ND);
 simTime  = toc(tstart);
 
 % Run MC analysis
-[muf, Sigmaf] = MonteCarlo(solution,C,ND,IC,'k');
+[muf, Sigmaf] = MonteCarlo(solution,C,ND,IC,'r');
 
 % Sensitivity analysis
-plotSensitivities(solution.phase.time, solution.phase.state(:, 5 : 8), 7, 'k');
+plotSensitivities(solution.phase.time, solution.phase.state(:, 5 : 8), 7, 'r');
