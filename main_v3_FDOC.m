@@ -8,14 +8,14 @@
 clear all;
 clc;
 
-addpath('../GPOPS-II-continuous');
-addpath('../GPOPS-II-endpoint');
-addpath('../GPOPS-II-obtain-solution');
-addpath('../linearizations');
-addpath('../post-processing');
-addpath('../run-scripts');
-addpath('../setup-scripts');
-addpath('../solution-data-files');
+addpath('GPOPS-II-continuous');
+addpath('GPOPS-II-endpoint');
+addpath('GPOPS-II-obtain-solution');
+addpath('linearizations');
+addpath('post-processing');
+addpath('run-scripts');
+addpath('setup-scripts');
+addpath('solution-data-files');
 
 % Choose alpha values for your desensitization 
 % 0 implies no desensitization
