@@ -31,8 +31,8 @@ mass     = input.auxdata.mass;
 kQ       = input.auxdata.kQ;
 
 p        = Hbar;
-R        = input.auxdata.R;
 SigmaP   = input.auxdata.SigmaP;
+Q        = input.auxdata.Q;
 
 a0       = input.auxdata.a0;
 a1       = input.auxdata.a1;
@@ -64,22 +64,14 @@ fpadot = Lbar ./ (mass .* vbar) - mubar .* cos(fpa)./(rbar.^2 .* vbar) + vbar .*
 % ---------------------- Evaluate Feedback Cost ------------------ %
 % -----------------------------------------------------------------%
 % 
-% % Initialize Riccati matrix dynamics
-% Pdot = zeros(L, 16);
 
 % Initialize sensitivity matrix dynamics
 Sdot = zeros(L, 4);
 
 % Initialize feedback cost
-% J_feedback = zeros(L, 1);
+J_feedback = zeros(L, 1);
 
 for k = 1 : L % Loop through each time step 
-    
-%     % Get Riccati vector at time tk
-%     Pvec_k = Pvec(k, :);
-%     
-%     % Reshape Riccati vector -> Riccati matrix
-%     P_k = reshape(Pvec_k, 4, 4);
     
     % Get sensitivity vector at time tk
     Svec_k = Svec(k, :);
@@ -96,31 +88,19 @@ for k = 1 : L % Loop through each time step
     % Compute linearizations at time tk
     UQ_k = [Dbar(k), Lbar(k), mass, mubar, qbar(k), a1, b1, b2, hbar(k)]; % Useful quantities
     A_k = computeStateLinearization_v3(x_k, u_k, p, UQ_k);
-    %B_k = computeControlLinearization_v3(x_k, u_k, p, UQ_k);
     D_k = computeParameterLinearization_v3(x_k, u_k, p, UQ_k);
     
-%     % Compute Kalman gain
-%     K_k = -R \ B_k' * P_k;
-    
     % Propagate sensitivity dynamics
-    %Sdot_k = (A_k + B_k * K_k) * S_k + D_k;
     Sdot_k = A_k * S_k + D_k;
     
     % Reshape sensitivity matrix -> sensitivity vector
     Sdotvec_k = reshape(Sdot_k, 1, 4);
     
-%     % Propagate Riccati dynamics
-%     Pdot_k = -(A_k' * P_k + P_k * A_k - P_k * B_k / R * B_k' * P_k);
-%     
-%     % Reshape Riccati matrix -> Riccati vector
-%     Pdotvec_k = reshape(Pdot_k, 1, 16);
-    
     % Store derivatives
     Sdot(k, :) = Sdotvec_k;
-%     Pdot(k, :) = Pdotvec_k;
     
     % Store running cost
-%     J_feedback(k) = trace(R * K_k * S_k * SigmaP * S_k' * K_k');
+    J_feedback(k) = trace(Q * S_k * SigmaP * S_k');
 
 end
 
@@ -135,7 +115,7 @@ normal_load      = sqrt(Lbar.^2 + Dbar.^2) * g0 / mass;
 % Output dynamics, path constraints, and running cost
 phaseout.dynamics  = [raddot, phidot, vdot, fpadot, Sdot];
 phaseout.path      = [heating_rate, dynamic_pressure, normal_load];
-% phaseout.integrand = J_feedback;
+phaseout.integrand = J_feedback;
 
 end
 

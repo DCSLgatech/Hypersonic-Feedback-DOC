@@ -4,7 +4,7 @@
 % ---------- (uncertain parameters: Scale height - H) ------------------- %
 % ----------------------------------------------------------------------- %
 
-close all;
+%close all;
 clear all;
 clc;
 
@@ -49,4 +49,4 @@ simTime  = toc(tstart);
 [muf, Sigmaf] = MonteCarlo(solution,C,ND,IC,'k');
 
 % Sensitivity analysis
-plotSensitivities(solution.phase.time, solution.phase.state(:, 5 : 8), 7, 'k');
+plotSensitivities(ND, solution.phase.time, solution.phase.state(:, 5 : 8), 7, 'k');

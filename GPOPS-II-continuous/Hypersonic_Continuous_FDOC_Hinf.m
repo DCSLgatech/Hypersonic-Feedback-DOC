@@ -34,6 +34,8 @@ kQ       = input.auxdata.kQ;
 
 p        = Hbar;
 R        = input.auxdata.R;
+Q        = input.auxdata.Q;
+M        = input.auxdata.M;
 SigmaP   = input.auxdata.SigmaP;
 
 a0       = input.auxdata.a0;
@@ -103,7 +105,7 @@ for k = 1 : L % Loop through each time step
     
     % Compute Kalman gain
     K_k = -R \ B_k' * P_k;
-    L_k = (1 / gamma^2) * D_k' * P_k;
+    L_k = (1 / gamma^2) * M^(-1) * D_k' * P_k;
     
     % Propagate sensitivity dynamics
     Sdot_k = (A_k + B_k * K_k) * S_k + D_k;
@@ -112,8 +114,8 @@ for k = 1 : L % Loop through each time step
     Sdotvec_k = reshape(Sdot_k, 1, 4);
     
     % Propagate Riccati dynamics
-    X_k    = B_k / R * B_k' - (1 / gamma^2) * (D_k * D_k');
-    Pdot_k = -(A_k' * P_k + P_k * A_k  - P_k * X_k * P_k);% + Q);
+    X_k    = B_k / R * B_k' - (1 / gamma^2) * (D_k * M^(-1) * D_k');
+    Pdot_k = -(A_k' * P_k + P_k * A_k  - P_k * X_k * P_k + Q);
 
     % Reshape Riccati matrix -> Riccati vector
     Pdotvec_k = reshape(Pdot_k, 1, 16);
@@ -123,7 +125,7 @@ for k = 1 : L % Loop through each time step
     Pdot(k, :) = Pdotvec_k;
     
     % Store running cost
-    J_feedback(k) = trace(R * K_k * S_k * SigmaP * S_k' * K_k') - gamma^2 * trace(L_k * S_k * SigmaP * S_k' * L_k');
+    J_feedback(k) = trace((Q + K_k' * R * K_k - gamma^2 * L_k' * M * L_k) * S_k * SigmaP * S_k');
 
 end
 

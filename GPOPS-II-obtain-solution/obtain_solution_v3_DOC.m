@@ -13,6 +13,7 @@ auxdata.g0       = C.g0;
 auxdata.SigmaP   = C.SigmaP;
 auxdata.R        = C.R;
 auxdata.Qf       = C.Qf;
+auxdata.Q        = C.Q;
 
 auxdata.mass     = C.mass;
 auxdata.kQ       = C.kQ;
@@ -53,8 +54,8 @@ bounds.phase.path.lower = zeros(1, 3);
 bounds.phase.path.upper = [C.Qdotmax C.qbarmax C.nmax];
 
 % Integral bounds
-%bounds.phase.integral.lower = 0;
-%bounds.phase.integral.upper = 1E6;
+bounds.phase.integral.lower = 0;
+bounds.phase.integral.upper = 1E6;
 
 %-------------------------------------------------------------------------%
 %---------------------- Provide Guess of Solution ------------------------%
@@ -67,8 +68,6 @@ nominal         = nominal_loader.solution;
 nominal_time    = nominal.time;
 nominal_state   = nominal.state;
 nominal_control = nominal.control;
-sensi_loader    = load('doc_sensi');
-sensiGuess      = sensi_loader.S;
 
 % tGuess               = [0; 1.44552];
 % radGuess             = [IC.rbar; FC.rbar];
@@ -86,6 +85,8 @@ sensiGuess      = sensi_loader.S;
 guess.phase.state    = nominal_state;
 guess.phase.control  = nominal_control;
 guess.phase.time     = nominal_time;
+
+guess.phase.integral = 1;
 
 %-------------------------------------------------------------------------%
 %----------Provide Mesh Refinement Method and Initial Mesh ---------------%

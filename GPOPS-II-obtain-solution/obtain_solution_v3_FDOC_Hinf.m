@@ -15,6 +15,8 @@ auxdata.g0       = C.g0;
 auxdata.SigmaP   = C.SigmaP;
 auxdata.R        = C.R;
 auxdata.Qf       = C.Qf;
+auxdata.Q        = C.Q;
+auxdata.M        = C.M;
 
 auxdata.mass     = C.mass;
 auxdata.kQ       = C.kQ;

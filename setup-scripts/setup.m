@@ -24,6 +24,8 @@ C.kQ   = 9.4369 * 1e-5;     % heating rate constant
 % Cost weights
 C.Qf   = eye(4); %blkdiag(0, 1, 1, 0, 0, 0); % terminal output penalty
 C.R    = 100;
+C.Q    = 0 * eye(4);
+C.M    = 0.1;
 
 % Path constraints
 

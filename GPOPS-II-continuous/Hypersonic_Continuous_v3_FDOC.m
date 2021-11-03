@@ -32,6 +32,7 @@ kQ       = input.auxdata.kQ;
 
 p        = Hbar;
 R        = input.auxdata.R;
+Q        = input.auxdata.Q;
 SigmaP   = input.auxdata.SigmaP;
 
 a0       = input.auxdata.a0;
@@ -109,9 +110,9 @@ for k = 1 : L % Loop through each time step
     % Reshape sensitivity matrix -> sensitivity vector
     Sdotvec_k = reshape(Sdot_k, 1, 4);
     
-%     % Propagate Riccati dynamics
-    Pdot_k = -(A_k' * P_k + P_k * A_k - P_k * B_k / R * B_k' * P_k);
-%     
+    % Propagate Riccati dynamics
+    Pdot_k = -(A_k' * P_k + P_k * A_k - P_k * B_k / R * B_k' * P_k + Q);
+     
     % Reshape Riccati matrix -> Riccati vector
     Pdotvec_k = reshape(Pdot_k, 1, 16);
     
@@ -120,7 +121,7 @@ for k = 1 : L % Loop through each time step
     Pdot(k, :) = Pdotvec_k;
     
     % Store running cost
-    J_feedback(k) = trace(R * K_k * S_k * SigmaP * S_k' * K_k');
+    J_feedback(k) = trace(R * K_k * S_k * SigmaP * S_k' * K_k') + trace(Q * S_k * SigmaP * S_k');
 
 end
 

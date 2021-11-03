@@ -11,6 +11,6 @@ phif   = input.phase.finalstate(2);
         
 sensitivity_cost = trace(Qf * Sf * SigmaP * Sf');
 
-output.objective = -phif + alpha * sensitivity_cost;
+output.objective = -phif + alpha * (sensitivity_cost + input.phase.integral);
 
 end

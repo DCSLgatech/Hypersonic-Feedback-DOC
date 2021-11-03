@@ -18,7 +18,7 @@ addpath('solution-data-files');
 
 % Choose alpha values for your desensitization 
 % 0 implies no desensitization
-alpha = 10;
+alpha = 1;
 
 % Load the set-up (constants, initial and final conditions, bounds)
 [C, IC, FC, LB, UB] = setup();
@@ -42,11 +42,11 @@ p_range = mvnrnd(p_nom, C.SigmaP, n_trials)';
     
 % Obtain solution from GPOPS-II
 tstart   = tic;
-solution = obtain_solution_v3_FDOC(alpha, C, IC, FC, LB, UB, ND);
+solution = obtain_solution_v3_DOC(alpha, C, IC, FC, LB, UB, ND);
 simTime  = toc(tstart);
 
 % Run MC analysis
-[muf, Sigmaf] = MonteCarlo(solution,C,ND,IC,'k');
+[muf, Sigmaf] = MonteCarlo(solution,C,ND,IC,'b');
 
 % Sensitivity analysis
-plotSensitivities(solution.phase.time, solution.phase.state(:, 5 : 8), 7, 'k');
+plotSensitivities(ND, solution.phase.time, solution.phase.state(:, 5 : 8), 7, 'b');

@@ -19,7 +19,7 @@ addpath('solution-data-files');
 % Choose alpha values for your desensitization 
 % 0 implies no desensitization
 alpha = 10;
-gamma = 1;
+gamma = 0.1;
 
 % Load the set-up (constants, initial and final conditions, bounds)
 [C, IC, FC, LB, UB] = setup();
